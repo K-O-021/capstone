@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "@/context/AppContext";
+import TeacherMobile from "./TeacherMobile";
 
 // ── Design Tokens ─────────────────────────────────────────────────────────
 const M = {
@@ -1144,8 +1145,22 @@ const TeacherHome:React.FC=()=>{
   const [student,setStudent]=useState<Student|null>(null);
   const [logData,setLogData]=useState<LogState|null>(null);
 
+  // Check if the device is mobile based on screen width
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const go=(v:string,s=1)=>{setView(v);setStep(s);};
   const handleLogout=()=>{setUser(null);navigate("/");};
+
+  // If mobile is detected, render the mobile-optimized component
+  if (isMobile) return <TeacherMobile />;
 
   return(
     <>
