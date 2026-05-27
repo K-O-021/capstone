@@ -126,10 +126,14 @@ const SignupPage = () => {
     if (addUser) {
       if (role === 'teacher') {
         // Find the existing whitelisted record to update its credentials
-        const whitelistedUser = users.find(u => 
-          (u.teacherId === formData.id.trim().toUpperCase() || u.id === formData.id.trim().toUpperCase()) &&
+        const whitelistedUser = users.find(u =>
+          u.teacherId === formData.id.trim().toUpperCase() || u.id === formData.id.trim().toUpperCase()
+        );
+        if (whitelistedUser) {
+          addUser({
+            ...whitelistedUser,
             email: formData.email,
-            password: formData.password 
+            password: formData.password,
           });
         }
       } else {
